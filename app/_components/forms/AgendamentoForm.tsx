@@ -8,20 +8,10 @@ import { FloatLabel } from "primereact/floatlabel"; // Importação necessária
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { AutoComplete } from "primereact/autocomplete";
-
-interface IAgendamento {
-    data: Date | null
-    hora: Date | null
-    valorFinal: number
-    status: string
-    paciente: number | null
-    colaborador: number | null
-    procedimento: number | null
-}
-
+import { IAgendamento } from "@/src/types/IAgendamento";
 
 export default function AgendamentoForm() {
-    const [form, setForm] = useState<IAgendamento>({
+    const [form, setForm] = useState<Partial<IAgendamento>>({
         data: null,
         hora: null,
         valorFinal: 0,

@@ -7,18 +7,10 @@ import { Calendar } from "primereact/calendar";
 import { FloatLabel } from "primereact/floatlabel"; // Importação necessária
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
-
-interface IColaborador {
-    nome: string
-    duracao: number
-    valorPadrao: number
-    descricao: string
-    status: string
-}
-
+import { IProcedimento } from "@/src/types/IProcedimento";
 
 export default function ProcedimentoForm() {
-    const [form, setForm] = useState<IColaborador>({
+    const [form, setForm] = useState<Partial<IProcedimento>>({
         nome: '',
         duracao: 0,
         valorPadrao: 0,

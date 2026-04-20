@@ -5,21 +5,29 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { FloatLabel } from "primereact/floatlabel"; // Importação necessária
+import { IPaciente } from "@/src/types/IPaciente";
+import { createPaciente } from "@/app/actions/pacienteActions/createPaciente";
+import { updatePaciente } from "@/app/actions/pacienteActions/updatePaciente";
 
-export default function PacienteForm() {
-  const [form, setForm] = useState({
-    nome: "",
-    cpf: "",
-    telefone: "",
-    email: "",
-    data_nasc: null as Date | null,
-    estado: "",
-    cidade: "",
-    bairro: "",
-    logradouro: "",
-    num_apto: "",
-    cep: "",
-    obs: "",
+interface PacienteFormProps {
+  selectedPaciente: IPaciente | null
+  mode: string
+}
+
+export default function PacienteForm(props: PacienteFormProps) {
+  const [form, setForm] = useState<Partial<IPaciente>>({
+    nome: props.selectedPaciente?.nome || "",
+    cpf: props.selectedPaciente?.cpf || "",
+    telefone: props.selectedPaciente?.telefone || "",
+    email: props.selectedPaciente?.email || "",
+    dataNasc: props.selectedPaciente?.dataNasc ? new Date(props.selectedPaciente.dataNasc) : null,
+    estado: props.selectedPaciente?.estado || "",
+    cidade: props.selectedPaciente?.cidade || "",
+    bairro: props.selectedPaciente?.bairro || "",
+    logradouro: props.selectedPaciente?.logradouro || "",
+    numApto: props.selectedPaciente?.numApto || "",
+    cep: props.selectedPaciente?.cep || "",
+    obs: props.selectedPaciente?.obs || "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -27,9 +35,17 @@ export default function PacienteForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(form);
+    console.log(props.selectedPaciente)
+    if (props.mode == 'create') {
+      const result = await createPaciente(form)
+      alert(result.msg)      
+    }
+    if(props.mode == 'update' && props.selectedPaciente?.idpaciente){
+      const result = await updatePaciente(form, props.selectedPaciente.idpaciente)
+      alert(result.msg)
+    }
   };
 
   return (
@@ -61,8 +77,8 @@ export default function PacienteForm() {
         <FloatLabel>
           <Calendar
             id="data_nasc"
-            value={form.data_nasc}
-            onChange={(e) => setForm(p => ({...p, data_nasc: e.value as Date}))}
+            value={form.dataNasc}
+            onChange={(e) => setForm(p => ({ ...p, dataNasc: e.value as Date }))}
             dateFormat="dd/mm/yy"
             showIcon
             className="w-full"
@@ -97,8 +113,8 @@ export default function PacienteForm() {
 
         {/* NÚMERO / APTO */}
         <FloatLabel>
-          <InputText id="num_apto" name="num_apto" value={form.num_apto} onChange={handleChange} className="w-full" />
-          <label htmlFor="num_apto">Número / Apto</label>
+          <InputText id="numApto" name="numApto" value={form.numApto} onChange={handleChange} className="w-full" />
+          <label htmlFor="numApto">Número / Apto</label>
         </FloatLabel>
 
         {/* CEP */}
@@ -119,7 +135,7 @@ export default function PacienteForm() {
           <label htmlFor="obs">Observações</label>
         </FloatLabel>
 
-        <Button type="submit" label="Salvar Registro" icon="pi pi-check" className="col-span-full mt-4" />
+        <Button type="submit" label={props.mode == 'update' ? 'Atualizar Paciente' : 'Cadastrar Paciente'} icon="pi pi-check" className="col-span-full mt-4" />
       </form>
     </div>
   );
