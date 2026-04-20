@@ -1,16 +1,8 @@
 import { FaUserDoctor } from "react-icons/fa6"
 import { IoCalendarOutline, IoPersonOutline } from "react-icons/io5"
 import { MdOutlineMedicalServices, MdOutlinePayments } from "react-icons/md"
-import { PacienteSection } from "../sections/PacienteSection"
-import { ColaboradorSection } from "../sections/ColaboradorSection"
-import { ProcedimentoSection } from "../sections/ProcedimentoSection"
-import { AgendamentoSection } from "../sections/AgendamentoSection"
 
-interface SideBarProps{
-    changeSection: Function
-}
-
-export default function SideBar(props: SideBarProps) {
+export default function SideBar() {
     const SIDEBAR_BTN_CLASS = "w-full text-left p-3 transition-colors duration-400 text-white hover:bg-white hover:text-cyan-400 font-medium flex items-center cursor-pointer"
     return (
         <div style={{backgroundColor: 'var(--primary-color)'}} className="h-[100vh] min-w-[220px] shadow-2xl">
@@ -19,24 +11,24 @@ export default function SideBar(props: SideBarProps) {
                 <h3 className="text-xl font-bold text-white mt-4 mb-4 ml-4">
                     Multi Clin
                 </h3>
-                <button className={SIDEBAR_BTN_CLASS} onClick={() => props.changeSection(()=> AgendamentoSection)}>
+                <a className={SIDEBAR_BTN_CLASS} href="/agendamentos">
                     <span className="text-lg mr-3"> <IoCalendarOutline /></span> Agendamentos
-                </button>
-                <button className={SIDEBAR_BTN_CLASS} onClick={() => props.changeSection(()=> PacienteSection)}>
+                </a>
+                <a className={SIDEBAR_BTN_CLASS} href="/pacientes">
                     <span className="text-lg mr-3"> <IoPersonOutline /></span> Pacientes
-                </button>
+                </a>
 
-                <button className={SIDEBAR_BTN_CLASS}>
+                <a className={SIDEBAR_BTN_CLASS} href="/pagamentos">
                     <span className="text-lg mr-3"> <MdOutlinePayments /></span> Pagamentos
-                </button>
+                </a>
 
-                <button className={SIDEBAR_BTN_CLASS} onClick={() => props.changeSection(()=> ProcedimentoSection)}>
+                <a className={SIDEBAR_BTN_CLASS} href="/procedimentos">
                     <span className="text-lg mr-3"> <MdOutlineMedicalServices /></span> Procedimentos
-                </button>
+                </a>
 
-                <button className={SIDEBAR_BTN_CLASS} onClick={() => props.changeSection(()=> ColaboradorSection)}>
+                <a className={SIDEBAR_BTN_CLASS} href="/colaboradores">
                     <span className="text-lg mr-3"> <FaUserDoctor /></span> Colaboradores
-                </button>
+                </a>
             </div>
         </div>
     )

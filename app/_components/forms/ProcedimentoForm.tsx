@@ -8,14 +8,22 @@ import { FloatLabel } from "primereact/floatlabel"; // Importação necessária
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { IProcedimento } from "@/src/types/IProcedimento";
+import { IPaciente } from "@/src/types/IPaciente";
+import { createProcedimento } from "@/app/actions/procedimentoActions/createProcedimento";
+import { updateProcedimento } from "@/app/actions/procedimentoActions/updateProcedimento";
 
-export default function ProcedimentoForm() {
+interface ProcedimentoFormProps {
+  selectedProcedimento: IProcedimento | null
+  mode: string
+}
+
+export default function ProcedimentoForm(props: ProcedimentoFormProps) {
     const [form, setForm] = useState<Partial<IProcedimento>>({
-        nome: '',
-        duracao: 0,
-        valorPadrao: 0,
-        descricao: '',
-        status: ''
+        nome: props.selectedProcedimento?.nome || '',
+        duracao: props.selectedProcedimento?.duracao || 0,
+        valorPadrao: props.selectedProcedimento?.valorPadrao || 0,
+        descricao: props.selectedProcedimento?.descricao || '',
+        status: props.selectedProcedimento?.status || ''
     });
 
     const status = [
@@ -36,9 +44,17 @@ export default function ProcedimentoForm() {
         setForm((prev) => ({ ...prev, [name]: value ?? 0 }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log(form);
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();        
+        if(props.mode == 'create'){
+            const result = await createProcedimento(form)
+            alert(result.msg)
+            return
+        }
+        if(props.mode == 'update' && props.selectedProcedimento?.idprocedimento){            
+            const result = await updateProcedimento(form, props.selectedProcedimento.idprocedimento)
+            alert(result.msg)
+        }
     };
 
     return (
@@ -85,7 +101,7 @@ export default function ProcedimentoForm() {
                     />
                     <label htmlFor="descricao">Descrição</label>
                 </FloatLabel>
-                <Button type="submit" label="Salvar Registro" icon="pi pi-check" className="col-span-full mt-4" />
+                <Button type="submit" label={props.mode == 'update' ?  'Atualizar Registro' : 'Salvar Registro'} icon="pi pi-check" className="col-span-full mt-4" />
             </form>
         </div>
     );

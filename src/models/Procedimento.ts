@@ -21,8 +21,8 @@ export const Procedimento = sequelize.define("Procedimento", {
     allowNull: false,
   },
   status: {
-    type: DataTypes.ENUM('ativo', 'inativo'), // ativo / inativo
-    defaultValue: "ativo",
+    type: DataTypes.ENUM('ATIVO', 'INATIVO'), // ativo / inativo
+    defaultValue: "ATIVO",
   },
   comissao: {
     type: DataTypes.DECIMAL(5, 2), // porcentagem (ex: 10.00 = 10%)
