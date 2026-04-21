@@ -6,6 +6,9 @@ import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { FloatLabel } from "primereact/floatlabel"; // Importação necessária
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { Password } from "primereact/password";
+import { IColaborador } from "@/src/types/IColaborador";
+import { createColaborador } from "@/app/actions/colaboradorActions/createColaborador";
 
 export default function ColaboradorForm() {
     const [form, setForm] = useState<Partial<IColaborador>>({
@@ -13,7 +16,8 @@ export default function ColaboradorForm() {
         cpf: '',
         email: '',
         telefone: '',
-        status: ''
+        status: '',
+        senha: ''
     });
 
     const status = [
@@ -30,9 +34,10 @@ export default function ColaboradorForm() {
         setForm((prev) => ({ ...prev, status: e.value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(form);
+        const result = await createColaborador(form)
+        alert(result.msg)
     };
 
     return (
@@ -47,7 +52,7 @@ export default function ColaboradorForm() {
                 </FloatLabel>
 
                 <FloatLabel>
-                    <InputText id="cpf" name="cpf" value={form.cpf} onChange={handleChange} className="w-full" />
+                    <InputText id="cpf" name="cpf" value={form.cpf} onChange={handleChange} className="w-full" max={11}/>
                     <label htmlFor="cpf">CPF</label>
                 </FloatLabel>
 
@@ -72,6 +77,10 @@ export default function ColaboradorForm() {
                         optionValue="name"
                     />
                     <label htmlFor="status">Status</label>
+                </FloatLabel>
+                <FloatLabel>
+                    <Password id="senha" name="senha" value={form.senha} onChange={handleChange} className="w-full" />
+                    <label htmlFor="senha">Senha</label>
                 </FloatLabel>
                 <Button type="submit" label="Salvar Registro" icon="pi pi-check" className="col-span-full mt-4" />
             </form>

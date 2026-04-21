@@ -5,21 +5,28 @@ import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-
+  const router = useRouter()
   const handleLogin = async () => {
     if (!email || !senha) {
       alert("Preencha todos os campos");
       return;
     }
-
-    // Aqui você pode integrar com sua API
-    console.log({ email, senha });
-
-    alert("Login realizado (mock)");
+    const result = await signIn('credentials', {
+      redirect: false,
+      email: email,
+      password: senha
+    })
+    if(result?.ok){
+      router.push('/pacientes')
+    }else{
+      alert('Falha ao realizar login')
+    }
   };
 
   return (
@@ -38,6 +45,7 @@ export default function LoginPage() {
           <span className="p-float-label">
             <InputText
               id="email"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full"
@@ -50,6 +58,7 @@ export default function LoginPage() {
             <span className="p-float-label">
               <Password
                 id="senha"
+                name="password"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
                 toggleMask

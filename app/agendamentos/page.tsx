@@ -23,8 +23,8 @@ export default function AgendamentosPage() {
         <section className="flex flex-row flex-1">
             <SideBar />
             <div className="flex-1">
-                <h2 className="text-[1.5em] font-bold">Agendamento</h2>
-                <div className="flex items-center mb-1">
+                <h2 className="text-[1.5em] font-bold p-2">Agendamento</h2>
+                <div className="flex items-center mb-1 p-2">
                     <div className="p-inputgroup flex-1">
                         <span className="p-inputgroup-addon">
                             <i className="pi pi-search"></i>
@@ -36,7 +36,7 @@ export default function AgendamentosPage() {
                             className="w-full"
                         />
                     </div>
-                    <Button style={{ margin: 5 }} label="Novo Agendamento" onClick={handleModal} />
+                    <Button style={{ marginLeft: 5 }} label="Novo Agendamento" onClick={handleModal} />
                 </div>
                 {/* TABELA SIMPLES */}
                 <DataTable value={dados} globalFilter={pesquisa} emptyMessage="Nada encontrado">

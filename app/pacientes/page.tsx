@@ -48,8 +48,8 @@ export default function PacientesPage() {
             <div className="content flex-1">
 
 
-                <h2 className="text-[1.5em] font-bold">Paciente</h2>
-                <div className="flex items-center mb-1">
+                <h2 className="text-[1.5em] font-bold p-2">Paciente</h2>
+                <div className="flex items-center mb-1 p-2">
                     <div className="p-inputgroup flex-1">
                         <span className="p-inputgroup-addon">
                             <i className="pi pi-search"></i>
@@ -61,7 +61,7 @@ export default function PacientesPage() {
                             className="w-full"
                         />
                     </div>
-                    <Button className="p-button" style={{ margin: 5 }} label="Novo Paciente" onClick={() => {
+                    <Button className="p-button" style={{marginLeft: 5}} label="Novo Paciente" onClick={() => {
                         setModalMode('create')
                         setSelectedPaciente(null)
                         handleModal()

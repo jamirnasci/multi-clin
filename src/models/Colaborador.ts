@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "@/src/db/Sequelize";
-import { Agendamento } from "./Agendamento";
 
 export const Colaborador = sequelize.define("Colaborador", {
   idcolaborador: {
@@ -23,13 +22,9 @@ export const Colaborador = sequelize.define("Colaborador", {
     allowNull: false,
   },
   status: {
-    type: DataTypes.ENUM('ativo', 'inativo'), // pode ser "ativo", "inativo", etc
-    defaultValue: "ativo",
-  },
-  cargo_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
+    type: DataTypes.ENUM('ATIVO', 'INATIVO'), // pode ser "ativo", "inativo", etc
+    defaultValue: "ATIVO",
+  }
 }, {
   tableName: "colaboradores",
   timestamps: true,

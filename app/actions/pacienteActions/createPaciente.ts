@@ -1,9 +1,12 @@
 'use server'
 
+import { sequelize } from "@/src/db/Sequelize"
+import { syncDb } from "@/src/models/init"
 import { Paciente } from "@/src/models/Paciente"
 import { IPaciente } from "@/src/types/IPaciente"
 
 export async function createPaciente(data: Partial<IPaciente>) {
+
     try {
         await Paciente.create(data)
         return {
@@ -18,11 +21,13 @@ export async function createPaciente(data: Partial<IPaciente>) {
     }
 }
 
-/*
+async function db() {
     try {
-        await sequelize.authenticate();   
-        await syncDb()     
+        await sequelize.authenticate();
+        await syncDb()
         console.log('Connection has been established successfully.');
     } catch (error) {
         console.error('Unable to connect to the database:', error);
-    }*/
+    }
+}
+

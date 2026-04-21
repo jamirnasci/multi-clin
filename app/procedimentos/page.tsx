@@ -46,8 +46,8 @@ export default function ProcedimentoPage() {
             <SideBar/>
             <div className="flex-1">
 
-                <h2 className="text-[1.5em] font-bold">Procedimento</h2>
-                <div className="flex items-center mb-1">
+                <h2 className="text-[1.5em] font-bold p-2">Procedimento</h2>
+                <div className="flex items-center mb-1 p-2">
                     <div className="p-inputgroup flex-1">
                         <span className="p-inputgroup-addon">
                             <i className="pi pi-search"></i>
@@ -59,7 +59,7 @@ export default function ProcedimentoPage() {
                             className="w-full"
                         />
                     </div>
-                    <Button style={{ margin: 5 }} label="Novo Procedimento" onClick={handleModal} />
+                    <Button style={{ marginLeft: 5 }} label="Novo Procedimento" onClick={handleModal} />
                 </div>
                 {/* TABELA SIMPLES */}
                 <DataTable value={procedimentos} globalFilter={pesquisa} emptyMessage="Nada encontrado">
