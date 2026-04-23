@@ -21,7 +21,7 @@ export async function createPaciente(data: Partial<IPaciente>) {
     }
 }
 
-async function db() {
+export async function db() {
     try {
         await sequelize.authenticate();
         await syncDb()

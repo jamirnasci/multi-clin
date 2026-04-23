@@ -12,6 +12,8 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const router = useRouter()
+
+  
   const handleLogin = async () => {
     if (!email || !senha) {
       alert("Preencha todos os campos");

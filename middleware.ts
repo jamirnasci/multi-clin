@@ -1,4 +1,5 @@
 import { withAuth } from "next-auth/middleware";
+import { syncDb } from "./src/models/init";
 
 export default withAuth({
   pages: {
