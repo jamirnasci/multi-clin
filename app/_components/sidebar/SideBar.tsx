@@ -1,13 +1,12 @@
 import { signOut } from "next-auth/react"
-import { Button } from "primereact/button"
 import { FaUserDoctor } from "react-icons/fa6"
 import { IoCalendarOutline, IoPersonOutline } from "react-icons/io5"
 import { MdOutlineMedicalServices, MdOutlinePayments } from "react-icons/md"
 
 export default function SideBar() {
-    const SIDEBAR_BTN_CLASS = "w-full text-left p-3 transition-colors duration-400 text-white hover:bg-white hover:text-cyan-400 font-medium flex items-center cursor-pointer"
+    const SIDEBAR_BTN_CLASS = "w-full text-left p-3 transition-colors duration-400 text-white hover:bg-white hover:text-blue-400 font-medium flex items-center cursor-pointer"
     return (
-        <div style={{backgroundColor: 'var(--primary-color)'}} className="h-[100vh] min-w-[220px] shadow-2xl flex flex-col justify-between">
+        <div className="h-[100vh] min-w-[220px] shadow-2xl flex flex-col justify-between bg-blue-600">
             <div className="flex items-start flex-col text-white">
 
                 <h3 className="text-xl font-bold text-white mt-4 mb-4 ml-4">
@@ -33,9 +32,9 @@ export default function SideBar() {
                 </a>
             </div>
             <div className="flex justify-end w-full p-2">
-                <Button className="p-button-sm" severity="danger" onClick={()=>{
+                <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg" onClick={()=>{
                     signOut()
-                }}>Sair</Button>
+                }}>Sair</button>
             </div>
         </div>
     )

@@ -1,10 +1,10 @@
 export interface IAgendamento {
-    id: number | null
+    id: number
     data: Date | null
     hora: Date | null
     valorFinal: number
     status: string
-    paciente: number | null
-    colaborador: number | null
-    procedimento: number | null
+    paciente_id: number | null
+    colaborador_id: number | null
+    procedimento_id: number | null
 }

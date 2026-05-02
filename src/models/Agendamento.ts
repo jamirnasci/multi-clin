@@ -23,8 +23,8 @@ export const Agendamento = sequelize.define("Agendamento", {
         type: DataTypes.DECIMAL(10, 2),
     },
     status: {
-        type: DataTypes.ENUM('agendado', 'finalizado', 'confirmado', 'cancelado'), // ex: agendado, concluido, cancelado
-        defaultValue: "agendado",
+        type: DataTypes.ENUM('AGENDADO', 'FINALIZADO', 'CONFIRMADO', 'CANCELADO'), // ex: agendado, concluido, cancelado
+        defaultValue: "AGENDADO",
     },
     paciente_id: {
         type: DataTypes.INTEGER,

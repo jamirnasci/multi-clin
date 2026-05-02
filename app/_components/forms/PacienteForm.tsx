@@ -1,10 +1,5 @@
 'use client'
 import { useState } from "react";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
-import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
-import { FloatLabel } from "primereact/floatlabel"; // Importação necessária
 import { IPaciente } from "@/src/types/IPaciente";
 import { createPaciente } from "@/app/actions/pacienteActions/createPaciente";
 import { updatePaciente } from "@/app/actions/pacienteActions/updatePaciente";
@@ -37,105 +32,124 @@ export default function PacienteForm(props: PacienteFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(props.selectedPaciente)
-    if (props.mode == 'create') {
+    if (props.mode === 'create') {
       const result = await createPaciente(form)
       alert(result.msg)      
     }
-    if(props.mode == 'update' && props.selectedPaciente?.idpaciente){
+    if(props.mode === 'update' && props.selectedPaciente?.idpaciente){
       const result = await updatePaciente(form, props.selectedPaciente.idpaciente)
       alert(result.msg)
     }
   };
 
+  // Classes utilitárias para evitar repetição
+  const groupClass = "relative";
+  const inputClass = "block w-full px-3 py-3 text-gray-900 bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer";
+  const labelClass = "absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 cursor-text";
+
   return (
-    <div className="flex justify-center items-center p-4">
+    <div className="flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-2xl w-full max-w-[900px] grid grid-cols-1 md:grid-cols-3 gap-6"
       >
-        <FloatLabel className="md:col-span-2">
-          <InputText id="nome" name="nome" value={form.nome} onChange={handleChange} className="w-full" />
-          <label htmlFor="nome">Nome</label>
-        </FloatLabel>
+        {/* Nome */}
+        <div className={`${groupClass} md:col-span-2`}>
+          <input type="text" id="nome" name="nome" value={form.nome} onChange={handleChange} className={inputClass} placeholder=" " required />
+          <label htmlFor="nome" className={labelClass}>Nome</label>
+        </div>
 
-        <FloatLabel>
-          <InputText id="cpf" name="cpf" value={form.cpf} onChange={handleChange} className="w-full" />
-          <label htmlFor="cpf">CPF</label>
-        </FloatLabel>
+        {/* CPF */}
+        <div className={groupClass}>
+          <input type="text" id="cpf" name="cpf" value={form.cpf} onChange={handleChange} className={inputClass} placeholder=" " maxLength={11} />
+          <label htmlFor="cpf" className={labelClass}>CPF</label>
+        </div>
 
-        <FloatLabel>
-          <InputText id="telefone" name="telefone" value={form.telefone} onChange={handleChange} className="w-full" />
-          <label htmlFor="telefone">Telefone</label>
-        </FloatLabel>
+        {/* Telefone */}
+        <div className={groupClass}>
+          <input type="text" id="telefone" name="telefone" value={form.telefone} onChange={handleChange} className={inputClass} placeholder=" " />
+          <label htmlFor="telefone" className={labelClass}>Telefone</label>
+        </div>
 
-        <FloatLabel>
-          <InputText id="email" name="email" value={form.email} onChange={handleChange} className="w-full" />
-          <label htmlFor="email">Email</label>
-        </FloatLabel>
+        {/* Email */}
+        <div className={groupClass}>
+          <input type="email" id="email" name="email" value={form.email} onChange={handleChange} className={inputClass} placeholder=" " />
+          <label htmlFor="email" className={labelClass}>Email</label>
+        </div>
 
-        <FloatLabel>
-          <Calendar
-            id="data_nasc"
-            value={form.dataNasc}
-            onChange={(e) => setForm(p => ({ ...p, dataNasc: e.value as Date }))}
-            dateFormat="dd/mm/yy"
-            showIcon
-            className="w-full"
-            inputClassName="w-full"
+        {/* Data de Nascimento */}
+        <div className={groupClass}>
+          <input 
+            type="date" 
+            id="data_nasc" 
+            name="dataNasc" 
+            value={form.dataNasc ? new Date(form.dataNasc).toISOString().split('T')[0] : ''} 
+            onChange={(e) => setForm(p => ({ ...p, dataNasc: e.target.value ? new Date(e.target.value) : null }))} 
+            className={inputClass} 
           />
-          <label htmlFor="data_nasc">Data de Nascimento</label>
-        </FloatLabel>
+          <label htmlFor="data_nasc" className="absolute text-sm text-gray-500 -top-4 left-1 bg-white px-2">Data de Nascimento</label>
+        </div>
 
-        {/* ESTADO */}
-        <FloatLabel>
-          <InputText id="estado" name="estado" value={form.estado} onChange={handleChange} className="w-full" />
-          <label htmlFor="estado">Estado</label>
-        </FloatLabel>
+        {/* Estado */}
+        <div className={groupClass}>
+          <input type="text" id="estado" name="estado" value={form.estado} onChange={handleChange} className={inputClass} placeholder=" " />
+          <label htmlFor="estado" className={labelClass}>Estado</label>
+        </div>
 
-        {/* CIDADE */}
-        <FloatLabel>
-          <InputText id="cidade" name="cidade" value={form.cidade} onChange={handleChange} className="w-full" />
-          <label htmlFor="cidade">Cidade</label>
-        </FloatLabel>
+        {/* Cidade */}
+        <div className={groupClass}>
+          <input type="text" id="cidade" name="cidade" value={form.cidade} onChange={handleChange} className={inputClass} placeholder=" " />
+          <label htmlFor="cidade" className={labelClass}>Cidade</label>
+        </div>
 
-        {/* BAIRRO */}
-        <FloatLabel>
-          <InputText id="bairro" name="bairro" value={form.bairro} onChange={handleChange} className="w-full" />
-          <label htmlFor="bairro">Bairro</label>
-        </FloatLabel>
+        {/* Bairro */}
+        <div className={groupClass}>
+          <input type="text" id="bairro" name="bairro" value={form.bairro} onChange={handleChange} className={inputClass} placeholder=" " />
+          <label htmlFor="bairro" className={labelClass}>Bairro</label>
+        </div>
 
-        {/* LOGRADOURO (OCUPA 2 COLUNAS) */}
-        <FloatLabel className="md:col-span-2">
-          <InputText id="logradouro" name="logradouro" value={form.logradouro} onChange={handleChange} className="w-full" />
-          <label htmlFor="logradouro">Logradouro (Rua/Avenida)</label>
-        </FloatLabel>
+        {/* Logradouro */}
+        <div className={`${groupClass} md:col-span-2`}>
+          <input type="text" id="logradouro" name="logradouro" value={form.logradouro} onChange={handleChange} className={inputClass} placeholder=" " />
+          <label htmlFor="logradouro" className={labelClass}>Logradouro (Rua/Avenida)</label>
+        </div>
 
-        {/* NÚMERO / APTO */}
-        <FloatLabel>
-          <InputText id="numApto" name="numApto" value={form.numApto} onChange={handleChange} className="w-full" />
-          <label htmlFor="numApto">Número / Apto</label>
-        </FloatLabel>
+        {/* Número / Apto */}
+        <div className={groupClass}>
+          <input type="text" id="numApto" name="numApto" value={form.numApto} onChange={handleChange} className={inputClass} placeholder=" " />
+          <label htmlFor="numApto" className={labelClass}>Número / Apto</label>
+        </div>
 
         {/* CEP */}
-        <FloatLabel>
-          <InputText id="cep" name="cep" value={form.cep} onChange={handleChange} className="w-full" />
-          <label htmlFor="cep">CEP</label>
-        </FloatLabel>
+        <div className={groupClass}>
+          <input type="text" id="cep" name="cep" value={form.cep} onChange={handleChange} className={inputClass} placeholder=" " />
+          <label htmlFor="cep" className={labelClass}>CEP</label>
+        </div>
 
-        <FloatLabel className="col-span-full">
-          <InputTextarea
+        {/* Observações */}
+        <div className="col-span-full relative">
+          <textarea
             id="obs"
             name="obs"
             value={form.obs}
             onChange={handleChange}
             rows={3}
-            className="w-full"
+            className={`${inputClass} resize-none`}
+            placeholder=" "
           />
-          <label htmlFor="obs">Observações</label>
-        </FloatLabel>
+          <label htmlFor="obs" className={labelClass}>Observações</label>
+        </div>
 
-        <Button type="submit" label={props.mode == 'update' ? 'Atualizar Paciente' : 'Cadastrar Paciente'} icon="pi pi-check" className="col-span-full mt-4" />
+        {/* Botão Salvar */}
+        <button 
+          type="submit" 
+          className="col-span-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+          </svg>
+          {props.mode === 'update' ? 'Atualizar Paciente' : 'Cadastrar Paciente'}
+        </button>
       </form>
     </div>
   );

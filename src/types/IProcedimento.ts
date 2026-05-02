@@ -1,5 +1,5 @@
 export interface IProcedimento {
-    idprocedimento: number | null
+    idprocedimento: number
     nome: string
     duracao: number
     valorPadrao: number
