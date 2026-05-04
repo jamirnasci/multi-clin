@@ -6,23 +6,15 @@ import { BsPencilSquare } from "react-icons/bs";
 import PacienteForm from "../_components/forms/PacienteForm";
 import Modal from "../_components/modal/Modal";
 import SideBar from "../_components/sidebar/SideBar";
+import { usePaciente } from "@/src/hooks/usePaciente";
 
-export default function PacientesPage() {
+export default async function PacientesPage() {
     const [isModalVisible, setModalVisible] = useState<boolean>(false);
     const [pesquisa, setPesquisa] = useState("");
     const [modalMode, setModalMode] = useState("create");
     const [selectedPaciente, setSelectedPaciente] = useState<IPaciente | null>(null);
-    const [pacientes, setPacientes] = useState<Partial<IPaciente>[]>([]);
-
-    useEffect(() => {
-        const loadPacientes = async () => {
-            const result = await fetch('/api/pacientes');
-            const obj = await result.json();
-            setPacientes(obj);
-        }
-        loadPacientes();
-    }, []);
-
+    
+    const { pacientes, loading, error, setPacientes } = await usePaciente();
     const handleModal = () => {
         setModalVisible(!isModalVisible);
     }
