@@ -1,5 +1,6 @@
 'use client'
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import { IPaciente } from "@/src/types/IPaciente";
 import { MdDeleteOutline } from "react-icons/md";
 import { BsPencilSquare } from "react-icons/bs";
@@ -8,13 +9,13 @@ import Modal from "../_components/modal/Modal";
 import SideBar from "../_components/sidebar/SideBar";
 import { usePaciente } from "@/src/hooks/usePaciente";
 
-export default async function PacientesPage() {
+export default function PacientesPage() {
     const [isModalVisible, setModalVisible] = useState<boolean>(false);
     const [pesquisa, setPesquisa] = useState("");
     const [modalMode, setModalMode] = useState("create");
     const [selectedPaciente, setSelectedPaciente] = useState<IPaciente | null>(null);
     
-    const { pacientes, loading, error, setPacientes } = await usePaciente();
+    const { pacientes, loading, error, setPacientes } = usePaciente();
     const handleModal = () => {
         setModalVisible(!isModalVisible);
     }

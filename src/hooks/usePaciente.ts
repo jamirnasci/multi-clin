@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IPaciente } from "../types/IPaciente";
 
-export async function usePaciente() {
+export function usePaciente() {
     const [pacientes, setPacientes] = useState<Partial<IPaciente>[]>([]);
     const [loading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);

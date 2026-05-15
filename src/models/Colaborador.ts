@@ -15,14 +15,18 @@ export const Colaborador = sequelize.define("Colaborador", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  telefone: DataTypes.STRING,
-  email: DataTypes.STRING,
-  senha: {
+  telefone: {
+    type: DataTypes.STRING,
+    unique: true,
+    allowNull: false
+  },
+  email: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true
   },
   status: {
-    type: DataTypes.ENUM('ATIVO', 'INATIVO'), // pode ser "ativo", "inativo", etc
+    type: DataTypes.ENUM('ATIVO', 'INATIVO'),
     defaultValue: "ATIVO",
   }
 }, {

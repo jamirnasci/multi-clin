@@ -24,7 +24,7 @@ export default function ProcedimentoPage() {
     }, []);
 
     const formatCurrency = (value: number) => {
-        return value.toLocaleString('pt-BR', {
+        return 'R$ ' + value.toLocaleString('pt-BR', {
             style: 'currency',
             currency: 'BRL'
         });

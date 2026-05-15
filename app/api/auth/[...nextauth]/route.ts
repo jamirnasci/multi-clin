@@ -1,11 +1,11 @@
-import { Colaborador } from "@/src/models/Colaborador"
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import bcrypt from 'bcrypt'
-import { IColaborador } from "@/src/types/IColaborador"
+import { IUsuario } from "@/src/types/IUsuario"
+import Usuario from "@/src/models/Usuario"
 
-export const authOptions = {
-    pages:{
+export const authOptions: NextAuthOptions = {    
+    pages: {
         signIn: '/'
     },
     providers: [
@@ -16,32 +16,49 @@ export const authOptions = {
                 password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials, req) {
-                console.log('login')
-                if(!credentials?.email || !credentials?.password) {
+
+                if (!credentials?.email || !credentials?.password) {
                     return null
                 }
-                const colaborador = (await Colaborador.findOne({
+                const usuario = await Usuario.findOne({
                     where: { email: credentials.email }
-                }))?.get() as IColaborador | undefined;
+                })
 
-                if (!colaborador) {
+                if (!usuario) {
                     return null
                 }
 
-                const isPasswordValid = await bcrypt.compare(credentials.password, colaborador.senha)
+                const isPasswordValid = await bcrypt.compare(credentials.password, usuario.password)
                 console.log(isPasswordValid)
                 if (!isPasswordValid) {
                     return null
                 }
-                
+
                 return {
-                    id: String(colaborador.idcolaborador),
-                    email: colaborador.email
+                    id: String(usuario.idusuario),
+                    email: usuario.email,
+                    role: usuario.role
                 }
-            },
+            }
         }),
     ],
-    
+    callbacks: {
+        async jwt({ token, user }: any) {
+
+            if (user) {
+                token.role = user.role
+            }
+
+            return token
+        },
+
+        async session({ session, token }: any) {
+
+            session.user.role = token.role
+
+            return session
+        }
+    }
 }
 const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST };

@@ -4,6 +4,5 @@ export interface IColaborador {
     cpf: string
     email: string
     telefone: string
-    senha: string
     status: string
 }

@@ -1,24 +1,28 @@
 'use client'
 import { useState } from "react";
-import { IColaborador } from "@/src/types/IColaborador";
-import { createColaborador } from "@/app/actions/colaboradorActions/createColaborador";
-import { updateColaborador } from "@/app/actions/colaboradorActions/updateColaborador";
+import { IUsuario } from "@/src/types/IUsuario";
+import { createUsuario } from "@/app/actions/usuarioActions/createUsuario";
+import { admUpdateUsuario } from "@/app/actions/admActions/updateUsuario";
 
-interface ColaboradorFormProps{
-    selectedColaborador: IColaborador | null
+interface UsuarioFormProps {
+    selectedUsuario: IUsuario | null
     mode: 'create' | 'update'
 }
 
-export default function ColaboradorForm(props: ColaboradorFormProps) {
-    const [form, setForm] = useState<Partial<IColaborador>>({
-        nome: props.selectedColaborador?.nome || '',
-        cpf: props.selectedColaborador?.cpf || '',
-        email: props.selectedColaborador?.email || '',
-        telefone: props.selectedColaborador?.telefone || '',
-        status: props.selectedColaborador?.status || ''
+export default function UsuarioForm(props: UsuarioFormProps) {
+    const [form, setForm] = useState<IUsuario>({
+        idusuario: null,
+        nome: props.selectedUsuario?.nome || '',
+        cpf: props.selectedUsuario?.cpf || '',
+        email: props.selectedUsuario?.email || '',
+        telefone: props.selectedUsuario?.telefone || '',
+        status: props.selectedUsuario?.status || 'INATIVO',
+        password: '',
+        role: props.selectedUsuario?.role || 'USER'
     });
-
-    const statusOptions = ['ATIVO', 'INATIVO'];
+    const [newPassword, setNewPassword] = useState<string | null>(null)
+    const statusOptions = ['INATIVO', 'ATIVO'];
+    const roleOptions = ['ADM', 'USER'];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -27,12 +31,12 @@ export default function ColaboradorForm(props: ColaboradorFormProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if(props.mode == 'create'){
-            const result = await createColaborador(form);
+        if (props.mode == 'create') {
+            const result = await createUsuario(form);
             alert(result.msg);
         }
-        if(props.selectedColaborador?.idcolaborador){
-            const result = await updateColaborador(form, props.selectedColaborador.idcolaborador)
+        if (props.selectedUsuario?.idusuario) {
+            const result = await admUpdateUsuario(form, props.selectedUsuario.idusuario, newPassword)
             alert(result.msg)
         }
     };
@@ -50,7 +54,7 @@ export default function ColaboradorForm(props: ColaboradorFormProps) {
             >
                 {/* Nome */}
                 <div className={`${groupClass} md:col-span-2`}>
-                    <input 
+                    <input
                         type="text" id="nome" name="nome" value={form.nome} onChange={handleChange}
                         className={inputClass} placeholder=" " required
                     />
@@ -59,7 +63,7 @@ export default function ColaboradorForm(props: ColaboradorFormProps) {
 
                 {/* CPF */}
                 <div className={groupClass}>
-                    <input 
+                    <input
                         type="text" id="cpf" name="cpf" value={form.cpf} onChange={handleChange}
                         className={inputClass} placeholder=" " maxLength={11} required
                     />
@@ -68,7 +72,7 @@ export default function ColaboradorForm(props: ColaboradorFormProps) {
 
                 {/* Telefone */}
                 <div className={groupClass}>
-                    <input 
+                    <input
                         type="text" id="telefone" name="telefone" value={form.telefone} onChange={handleChange}
                         className={inputClass} placeholder=" "
                     />
@@ -77,7 +81,7 @@ export default function ColaboradorForm(props: ColaboradorFormProps) {
 
                 {/* Email */}
                 <div className={groupClass}>
-                    <input 
+                    <input
                         type="email" id="email" name="email" value={form.email} onChange={handleChange}
                         className={inputClass} placeholder=" " required
                     />
@@ -86,7 +90,7 @@ export default function ColaboradorForm(props: ColaboradorFormProps) {
 
                 {/* Status */}
                 <div className={groupClass}>
-                    <select 
+                    <select
                         id="status" name="status" value={form.status} onChange={handleChange}
                         className={inputClass} required
                     >
@@ -98,8 +102,31 @@ export default function ColaboradorForm(props: ColaboradorFormProps) {
                     <label htmlFor="status" className={labelClass}>Status</label>
                 </div>
 
-                <button 
-                    type="submit" 
+                {/* Role */}
+                <div className={groupClass}>
+                    <select
+                        id="role" name="role" value={form.role} onChange={handleChange}
+                        className={inputClass} required
+                    >
+                        <option value="" disabled hidden></option>
+                        {roleOptions.map(opt => (
+                            <option key={opt} value={opt}>{opt}</option>
+                        ))}
+                    </select>
+                    <label htmlFor="status" className={labelClass}>Tipo de Usuário</label>
+                </div>
+
+                {/* Password */}
+                <div className={groupClass}>
+                    <input
+                        type="password" id="password" name="password" value={form.password} onChange={handleChange}
+                        className={inputClass} placeholder=" " required={props.mode === 'create'}
+                    />
+                    <label htmlFor="password" className={labelClass}>Senha</label>
+                </div>
+
+                <button
+                    type="submit"
                     className="col-span-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
